@@ -2,9 +2,11 @@
 
 import os
 import sys
+import time
 
 import uno
 from com.sun.star.connection import NoConnectException
+from com.sun.star.uno import RuntimeException
 from com.sun.star.beans import PropertyValue
 
 DEFAULT_OPENOFFICE_PORT = 2002
@@ -28,10 +30,28 @@ class DocumentCompare(object):
         localContext = uno.getComponentContext()
         resolver = localContext.ServiceManager.createInstanceWithContext(
                             "com.sun.star.bridge.UnoUrlResolver", localContext)
-        try:
-            self.context = resolver.resolve("uno:socket,host={0},port={1};urp;StarOffice.ComponentContext".format(address, port))
-        except NoConnectException:
+
+        tries = 10
+        while tries:
+            try:
+                self.context = resolver.resolve("uno:socket,host={0},port={1};urp;StarOffice.ComponentContext".format(address, port))
+                break
+            except (NoConnectException, RuntimeException):
+                if tries > 0:
+                    time.sleep(0.5)
+                    if tries == 10:
+                        sys.stdout.write("Wait connection to libreoffice")
+                        sys.stdout.flush()
+                    else:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    # wait soffice has been launched
+                tries -= 1
+        else:
+            sys.stdout.write("\n")
             raise DocumentCompareException("failed to connect to LibreOffice on {0}:{1}".format(address, port))
+
+
         self.desktop = self.context.ServiceManager.createInstanceWithContext("com.sun.star.frame.Desktop", self.context)
         self.servicemanager = self.context.ServiceManager
 

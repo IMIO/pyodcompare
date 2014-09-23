@@ -1,7 +1,7 @@
 import argparse
 import os
 from pyodcompare import DocumentCompare
-
+import sys
 
 def execute():
 
@@ -20,9 +20,13 @@ def execute():
                        help='LibreOffice service port')
 
     parsed = parser.parse_args()
-    compare = DocumentCompare(listener=(parsed.host, parsed.port))
-    compare.compare(os.path.abspath(parsed.changed_file),
-                    os.path.abspath(parsed.original_file),
-                    os.path.abspath(parsed.target_file),
-                    )
 
+    try:
+        compare = DocumentCompare(listener=(parsed.host, parsed.port))
+        compare.compare(os.path.abspath(parsed.changed_file),
+                        os.path.abspath(parsed.original_file),
+                        os.path.abspath(parsed.target_file),
+                        )
+    except Exception as error:
+        sys.stderr.write(str(error) + "\n")
+        sys.exit(1)

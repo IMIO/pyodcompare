@@ -35,5 +35,5 @@ class DocumentCompareTest(TestCase):
         """
         Cleanup
         """
-        #if os.path.exists(COMPARE_PATH):
-        #    os.remove(COMPARE_PATH)
+        if os.path.exists(COMPARE_PATH):
+            os.remove(COMPARE_PATH)
