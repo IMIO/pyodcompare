@@ -6,7 +6,7 @@ python:
 - '3.2'
 
 before_install:
-  - sudo apt-get install -qq python-uno libreoffice-writer
+  - sudo apt-get install -qq python-uno libreoffice-writer python3-uno
   - sudo chmod 777 /tmp
 before_script:
   - soffice --headless --accept="socket,port=2002;urp;"&
