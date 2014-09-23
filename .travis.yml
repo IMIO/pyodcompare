@@ -1,0 +1,21 @@
+language: python
+python:
+- '2.7'
+- '3.3'
+- pypy
+
+before_install:
+  - sudo apt-get install -qq python-uno
+  - sudo chmod 777 /tmp
+before_script:
+  - soffice --headless --accept="socket,port=2002;urp;"&
+install:
+  - python setup.py develop easy_install pyodcompare[test]
+script:
+  - python setup.py test
+after_script:
+  - killall soffice.bin
+notifications:
+  email:
+    - travis-reports@ecreall.com
+    - thomas.desvenain@gmail.com
