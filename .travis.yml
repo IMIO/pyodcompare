@@ -7,14 +7,13 @@ python:
 - pypy
 
 before_install:
-  - sudo apt-get install -qq python-uno
+  - sudo apt-get install -qq python-uno libreoffice-writer
   - sudo chmod 777 /tmp
 before_script:
   - soffice --headless --accept="socket,port=2002;urp;"&
 install:
   - python setup.py develop easy_install pyodcompare[test]
 script:
-  - dpkg -l | grep libreoffice
   - python setup.py test
 after_script:
   - killall soffice.bin
