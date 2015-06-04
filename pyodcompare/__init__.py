@@ -4,11 +4,6 @@ import os
 import sys
 import time
 
-import uno
-from com.sun.star.connection import NoConnectException
-from com.sun.star.uno import RuntimeException
-from com.sun.star.beans import PropertyValue
-
 DEFAULT_OPENOFFICE_PORT = 2002
 
 
@@ -26,6 +21,9 @@ class DocumentCompareException(Exception):
 class DocumentCompare(object):
 
     def __init__(self, listener=('localhost', DEFAULT_OPENOFFICE_PORT)):
+        import uno
+        from com.sun.star.connection import NoConnectException
+        from com.sun.star.uno import RuntimeException
         address, port = listener
         localContext = uno.getComponentContext()
         resolver = localContext.ServiceManager.createInstanceWithContext(
@@ -56,6 +54,8 @@ class DocumentCompare(object):
         self.servicemanager = self.context.ServiceManager
 
     def compare(self, path, original_path, save_path):
+        import uno
+        from com.sun.star.beans import PropertyValue
         if not os.path.exists(path):
             raise DocumentCompareException("%s does not exist" % (path,))
 
