@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2 (unreleased)
+0.2 (2015-06-05)
 ----------------
 
 - Move __init__.py 's content into new main module compare.py '.
